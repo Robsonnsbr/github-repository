@@ -3,11 +3,11 @@ interface IParams {
 }
 
 import User from "../../models/User";
-import Repository from "../../models/Repository";
+import Product from "../../models/Product";
 import { Response, Request } from "express";
 
 export class ProductsController {
-  public getAll = async (req: any, res: Response) => {
+  public getAll = async (req: Request, res: Response) => {
     try {
       const { user_id } = req.params;
       const user = await User.findById(user_id);
@@ -15,16 +15,16 @@ export class ProductsController {
         return res.status(404).json({ message: "not found!" });
       }
 
-      const repositories = await Repository.find({ userId: user_id });
+      const items = await Product.find({ userId: user_id });
 
-      return res.status(200).json(repositories);
+      return res.status(200).json(items);
     } catch (err) {
       console.error(err);
       return res.status(500).json({ error: "Internal server error." });
     }
   };
 
-  public create = async (req: any, res: Response) => {
+  public create = async (req: Request, res: Response) => {
     try {
       const { user_id } = req.params;
       const { name, url } = req.body;
@@ -34,28 +34,29 @@ export class ProductsController {
         return res.status(404).json({ message: "not found!" });
       }
 
-      const repository = await Repository.findOne({ userId: user_id, url });
-      if (repository) {
+      const product = await Product.findOne({ userId: user_id, url });
+      if (product) {
         return res
           .status(422)
-          .json({ message: `Repository ${url} already exists.` });
+          .json({ message: `Product ${url} already exists.` });
       }
 
-      await Repository.create({
+      await Product.create({
         name,
         url,
         userId: user_id,
       });
 
       return res.status(201).json({
-        message: `Repository: ${name} registered successfully.`,
+        message: `Product: ${name} registered successfully.`,
       });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ error: "Internal server error." });
     }
   };
-  public delete = async (req: any, res: Response) => {
+
+  public delete = async (req: Request, res: Response) => {
     try {
       const { user_id, id } = req.params;
 
@@ -64,16 +65,14 @@ export class ProductsController {
         return res.status(404).json({ message: "User not found!" });
       }
 
-      const repository = await Repository.findOne({ userId: user_id, _id: id });
-      if (!repository) {
-        return res.status(404).json({ message: "Repository not found!" });
+      const product = await Product.findOne({ userId: user_id, _id: id });
+      if (!product) {
+        return res.status(404).json({ message: "Product not found!" });
       }
 
-      await repository.deleteOne();
+      await product.deleteOne();
 
-      return res
-        .status(200)
-        .json({ message: "Repository deleted successfully." });
+      return res.status(200).json({ message: "Product deleted successfully." });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ error: "Internal server error." });

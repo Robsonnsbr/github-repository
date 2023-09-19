@@ -30,5 +30,6 @@ routes.delete(
   repositoriesController.delete
 );
 
-// Products
+// Products => atualmente sem utilidade
+//TODO: corrigir class productsController e criar class carrinho add também ao usuário itens selecionados
 routes.get("/products", productsController.getAll);
