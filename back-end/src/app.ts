@@ -1,11 +1,8 @@
 import express from "express";
 import cors from "cors";
-import * as dotenv from "dotenv";
 
 import { routes } from "./routes";
 import "./database";
-
-dotenv.config();
 
 class App {
   private _server;

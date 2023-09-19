@@ -1,15 +1,16 @@
-import { HelloController } from "./HelloControllers/HelloControllers";
 import { ProductsController } from "./ProductsControllers/ProductsControllers";
 import { UsersController } from "./UsersControllers/UsersControllers";
 import { RepositoriesController } from "./RepositoriesControllers/RepositoriesControllers";
+import { SessionsController } from "./SessionsController/SessionsController";
 
-const helloController = new HelloController();
-const hello = helloController.index;
-
-const productsController = new ProductsController();
-const products = productsController.index;
-
+const sessionsController = new SessionsController();
 const usersController = new UsersController();
 const repositoriesController = new RepositoriesController();
+const productsController = new ProductsController();
 
-export { products, hello, usersController, repositoriesController };
+export {
+  sessionsController,
+  usersController,
+  repositoriesController,
+  productsController,
+};

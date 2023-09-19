@@ -1,18 +1,20 @@
 import { Router } from "express";
+import { auth } from "../middlewares/auth";
 
 import {
-  hello,
-  products,
   usersController,
   repositoriesController,
+  sessionsController,
+  productsController,
 } from "../controllers";
 export const routes = Router();
 
-routes.get("/", hello);
+//  RESTfull
+// Public route
+routes.post("/sessions", sessionsController.create);
 
-routes.get("/products", products);
-
-// RESTfull
+//Private route
+routes.use(auth);
 // User
 routes.get("/users", usersController.getAll);
 routes.get("/users/:id", usersController.getOne);
@@ -21,15 +23,12 @@ routes.put("/users/:id", usersController.update);
 routes.delete("/users/:id", usersController.delete);
 
 // Repositories
-routes.get(
-  "/repositories/:user_id/repositories",
-  repositoriesController.getAll
+routes.get("/users/:user_id/repositories", repositoriesController.getAll);
+routes.post("/users/:user_id/repositories", repositoriesController.create);
+routes.delete(
+  "/users/:user_id/repositories/:id",
+  repositoriesController.delete
 );
-routes.post(
-  "/repositories/:user_id/repositories",
-  repositoriesController.create
-);
-// routes.get("/repositories/:id", repositoriesController.getOne);
-// routes.post("/repositories", repositoriesController.create);
-// routes.put("/repositories/:id", repositoriesController.update);
-// routes.delete("/repositories/:id", repositoriesController.delete);
+
+// Products
+routes.get("/products", productsController.getAll);
