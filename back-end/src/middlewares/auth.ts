@@ -39,8 +39,10 @@ export const auth = async (
 
     req.userId = decoded.id;
     return next();
-  } catch (error: any) {
-    console.error(`Erro na autenticação ou Token inválido! ${error.message}`);
+  } catch (error: unknown) {
+    console.error(
+      `Erro na autenticação ou Token inválido! ${(error as Error).message}`
+    );
     return res
       .status(401)
       .json({ message: "Erro na autenticação ou Token inválido!" });
