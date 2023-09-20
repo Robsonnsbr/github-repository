@@ -2,6 +2,7 @@ import { Router } from "express";
 import { auth } from "../middlewares/auth";
 
 import {
+  indexApiController,
   usersController,
   repositoriesController,
   sessionsController,
@@ -11,6 +12,7 @@ export const routes = Router();
 
 //  RESTfull
 // Public route
+routes.get("/", indexApiController.index);
 routes.post("/sessions", sessionsController.create);
 
 //Private route
